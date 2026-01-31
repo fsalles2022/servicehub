@@ -3,29 +3,38 @@
 // app/Http/Controllers/Api/TicketController.php
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
+use App\Models\Ticket;
 use App\Services\TicketService;
-use App\Http\Requests\StoreTicketRequest;
+use App\Http\Controllers\Controller;
 use App\Http\Resources\TicketResource;
+use Illuminate\Support\Facades\Request;
+use App\Http\Requests\StoreTicketRequest;
 
 class TicketController extends Controller
 {
-    public function __construct(
-        protected TicketService $service
-    ) {}
-
-    public function store(StoreTicketRequest $request)
+    public function store(StoreTicketRequest $request, TicketService $service)
     {
-        $ticket = $this->service->createTicket($request->validated());
-
-        return new TicketResource($ticket);
+        return response()->json(
+            $service->createTicket($request->validated()),
+            201
+        );
     }
 
-    public function show(int $id)
+    public function show(Ticket $ticket)
     {
-        $ticket = app(\App\Repositories\TicketRepository::class)
-            ->findWithRelations($id);
+        return $ticket->load(['detail', 'project', 'user']);
+    }
 
-        return new TicketResource($ticket);
+    public function upload(Request $request, Ticket $ticket)
+    {
+        $request->validate([
+            'attachment' => 'required|file'
+        ]);
+
+        $path = $request->file('attachment')->store('tickets');
+
+        ProcessTicketAttachment::dispatch($ticket, $path);
+
+        return response()->json(['queued' => true]);
     }
 }

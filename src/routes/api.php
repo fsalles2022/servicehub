@@ -1,14 +1,15 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\TicketController;
+use App\Http\Controllers\Api\CompanyController;
+use App\Http\Controllers\Api\ProjectController;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::middleware('auth:sanctum')->group(function () {
 
+    Route::apiResource('companies', CompanyController::class);
+    Route::apiResource('projects', ProjectController::class);
+    Route::apiResource('tickets', TicketController::class);
 
-// routes/api.php
-Route::post('/tickets', [TicketController::class, 'store']);
-Route::get('/tickets/{id}', [TicketController::class, 'show']);
+    Route::post('tickets/{ticket}/upload', [TicketController::class, 'upload']);
+});
