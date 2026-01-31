@@ -6,9 +6,11 @@ namespace App\Http\Controllers\Api;
 use App\Models\Ticket;
 use App\Services\TicketService;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\TicketResource;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreTicketRequest;
+use App\Jobs\ProcessTicketAttachment;
+
+
 
 class TicketController extends Controller
 {
@@ -28,12 +30,12 @@ class TicketController extends Controller
     public function upload(Request $request, Ticket $ticket)
     {
         $request->validate([
-            'attachment' => 'required|file'
+            'attachment' => 'required|file|mimes:json,txt'
         ]);
 
         $path = $request->file('attachment')->store('tickets');
 
-        ProcessTicketAttachment::dispatch($ticket, $path);
+        ProcessTicketAttachment::dispatch($ticket->id, $path);
 
         return response()->json(['queued' => true]);
     }
