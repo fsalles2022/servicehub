@@ -20,7 +20,7 @@ class ProcessTicketAttachment implements ShouldQueue
 
     public function __construct(Ticket $ticket, string $path)
     {
-        $this->ticket = $ticket;  // ⚠️ precisa ser o modelo, não o ID
+        $this->ticket = $ticket;  //Tem queser o modelo
         $this->path = $path;
     }
 
@@ -29,10 +29,16 @@ class ProcessTicketAttachment implements ShouldQueue
         // Lê o arquivo
         $content = Storage::get($this->path);
 
-        // Atualiza o TicketDetail relacionado
-        $this->ticket->detail()->update([
-            'technical_notes' => $content,
-        ]);
+        //*Atualiza o TicketDetail relacionado
+        // $this->ticket->detail()->update([
+        //    'technical_notes' => $content,
+        // ]);
+        //Atualiza ou cria o TicketDetail relacionado
+        TicketDetail::updateOrCreate(
+            ['ticket_id' => $this->ticket->id],
+            ['technical_notes' => $content]
+        );
+
 
         // Você pode adicionar notificações aqui se quiser
     }
