@@ -10,7 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Log;
+use App\Events\TicketProcessed;
 
 class ProcessTicketAttachment implements ShouldQueue
 {
@@ -44,6 +44,6 @@ class ProcessTicketAttachment implements ShouldQueue
 
 
         // Você pode adicionar notificações aqui se quiser
-        Log::info("Ticket {$this->ticket->id} processado para {$this->ticket->user->email}");
+        event(new TicketProcessed($this->ticket));
     }
 }
