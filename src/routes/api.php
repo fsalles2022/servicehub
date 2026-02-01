@@ -22,15 +22,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/projects', [ProjectController::class, 'store']);
     Route::get('/projects', [ProjectController::class, 'index']);
     Route::get('/projects/{id}', [ProjectController::class, 'show']);
-    
+
     Route::post('/tickets', [TicketController::class, 'store']);
     Route::get('/tickets/{ticket}', [TicketController::class, 'show']);
     Route::get('/tickets', [TicketController::class, 'index']);
     Route::post('/tickets/{ticket}/upload', [TicketController::class, 'upload']);
-
-    // temporariamente, teste no api.php
-Route::get('/projects/test', function () {
-    return ['ok' => true];
-});
-
 });
