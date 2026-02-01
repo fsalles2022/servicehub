@@ -8,7 +8,7 @@ class TicketRepository
 {
     public function create(array $data): Ticket
     {
-        dd($data);
+        //dd($data);
 
         return Ticket::create($data);
     }
@@ -17,5 +17,10 @@ class TicketRepository
     {
         return Ticket::with(['ticketDetail', 'project.company', 'user.userProfile'])
             ->findOrFail($id);
+    }
+
+    public function all()
+    {
+        return Ticket::all();
     }
 }

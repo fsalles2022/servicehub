@@ -14,6 +14,8 @@ use App\Jobs\ProcessTicketAttachment;
 
 class TicketController extends Controller
 {
+
+
     public function store(StoreTicketRequest $request, TicketService $service)
     {
         return response()->json(
@@ -21,6 +23,7 @@ class TicketController extends Controller
             201
         );
     }
+
 
     public function show(Ticket $ticket)
     {
@@ -35,8 +38,15 @@ class TicketController extends Controller
 
         $path = $request->file('attachment')->store('tickets');
 
-        ProcessTicketAttachment::dispatch($ticket->id, $path);
+        ProcessTicketAttachment::dispatch($ticket, $path);
 
         return response()->json(['queued' => true]);
+    }
+
+    public function index(TicketService $service)
+    {
+        return response()->json(
+            $service->index()
+        );
     }
 }

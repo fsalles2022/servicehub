@@ -11,15 +11,19 @@ class ProjectRepository
         return Project::create($data);
     }
 
-    public function byCompany(int $companyId)
+    public function all($companyId = null)
     {
-        return Project::where('company_id', $companyId)
-            ->with('tickets')
-            ->get();
+        $query = Project::query();
+
+        if ($companyId) {
+            $query->where('company_id', $companyId);
+        }
+
+        return $query->get();
     }
 
-    public function find(int $id)
+    public function find($id)
     {
-        return Project::with('tickets')->findOrFail($id);
+        return Project::with('company')->findOrFail($id);
     }
 }

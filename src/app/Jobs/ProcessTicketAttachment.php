@@ -3,32 +3,37 @@
 namespace App\Jobs;
 
 use App\Models\Ticket;
+use App\Models\TicketDetail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Storage;
 
 class ProcessTicketAttachment implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(
-        public int $ticketId,
-        public string $path
-    ) {}
+    public Ticket $ticket;
+    public string $path;
 
-    public function handle(): void
+    public function __construct(Ticket $ticket, string $path)
     {
-        $ticket = Ticket::with('detail')->findOrFail($this->ticketId);
+        $this->ticket = $ticket;  // ⚠️ precisa ser o modelo, não o ID
+        $this->path = $path;
+    }
 
-        $content = file_get_contents(storage_path("app/{$this->path}"));
+    public function handle()
+    {
+        // Lê o arquivo
+        $content = Storage::get($this->path);
 
-        $data = json_decode($content, true) ?? ['raw' => $content];
+        // Atualiza o TicketDetail relacionado
+        $this->ticket->detail()->update([
+            'technical_notes' => $content,
+        ]);
 
-        $ticket->detail()->updateOrCreate(
-            ['ticket_id' => $ticket->id],
-            ['payload' => $data]
-        );
+        // Você pode adicionar notificações aqui se quiser
     }
 }

@@ -17,7 +17,12 @@ class CompanyController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate(['name' => 'required|string']);
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'phone' => 'nullable|string'
+        ]);
+
         return $this->service->create($data);
     }
 
@@ -26,4 +31,3 @@ class CompanyController extends Controller
         return $this->service->show($id);
     }
 }
-

@@ -6,19 +6,24 @@ use App\Repositories\ProjectRepository;
 
 class ProjectService
 {
-    public function __construct(private ProjectRepository $repo) {}
+    protected $repo;
+
+    public function __construct(ProjectRepository $repo)
+    {
+        $this->repo = $repo;
+    }
 
     public function create(array $data)
     {
         return $this->repo->create($data);
     }
 
-    public function byCompany(int $companyId)
+    public function list($companyId = null)
     {
-        return $this->repo->byCompany($companyId);
+        return $this->repo->all($companyId);
     }
 
-    public function show(int $id)
+    public function find($id)
     {
         return $this->repo->find($id);
     }
