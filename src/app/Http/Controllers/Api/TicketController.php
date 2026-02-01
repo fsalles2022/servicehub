@@ -43,6 +43,20 @@ class TicketController extends Controller
         return response()->json(['queued' => true]);
     }
 
+    public function download(Ticket $ticket)
+    {
+        $content = $ticket->detail?->technical_notes;
+
+        if (! $content) {
+            return response()->json(['error' => 'Arquivo não encontrado'], 404);
+        }
+
+        return response($content)
+            ->header('Content-Type', 'text/plain')
+            ->header('Content-Disposition', 'attachment; filename="ticket_' . $ticket->id . '.txt"');
+    }
+
+
     public function index(TicketService $service)
     {
         return response()->json(

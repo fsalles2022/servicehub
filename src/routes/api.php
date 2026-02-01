@@ -27,4 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tickets/{ticket}', [TicketController::class, 'show']);
     Route::get('/tickets', [TicketController::class, 'index']);
     Route::post('/tickets/{ticket}/upload', [TicketController::class, 'upload']);
+
+    Route::get('/tickets/{ticket}/download', [TicketController::class, 'download']);
+
 });
