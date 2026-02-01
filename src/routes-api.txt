@@ -1,0 +1,12 @@
+  POST       api/companies ....................... Api\CompanyController@store
+  GET|HEAD   api/companies ....................... Api\CompanyController@index
+  GET|HEAD   api/companies/{id} ................... Api\CompanyController@show
+  POST       api/login .............................. Api\AuthController@login
+  POST       api/projects ........................ Api\ProjectController@store
+  GET|HEAD   api/projects ........................ Api\ProjectController@index
+  GET|HEAD   api/projects/test ............................................... 
+  GET|HEAD   api/projects/{id} .................... Api\ProjectController@show
+  POST       api/tickets .......................... Api\TicketController@store
+  GET|HEAD   api/tickets .......................... Api\TicketController@index
+  GET|HEAD   api/tickets/{ticket} .................. Api\TicketController@show
+  POST       api/tickets/{ticket}/upload ......... Api\TicketController@upload

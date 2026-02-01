@@ -8,9 +8,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Ticket extends Model
 {
-    use HasFactory;
+    protected $fillable = [
+        'title',
+        'description',
+        'status',
+        'project_id',
+        'user_id'
+    ];
 
-    protected $fillable = ['project_id', 'user_id', 'title', 'status'];
+    public function detail()
+    {
+        return $this->hasOne(TicketDetail::class);
+    }
 
     public function project()
     {
@@ -21,9 +30,5 @@ class Ticket extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    public function detail()
-    {
-        return $this->hasOne(TicketDetail::class);
-    }
 }
+
