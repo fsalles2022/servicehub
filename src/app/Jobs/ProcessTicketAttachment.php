@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class ProcessTicketAttachment implements ShouldQueue
 {
@@ -17,6 +18,7 @@ class ProcessTicketAttachment implements ShouldQueue
 
     public Ticket $ticket;
     public string $path;
+
 
     public function __construct(Ticket $ticket, string $path)
     {
@@ -26,6 +28,7 @@ class ProcessTicketAttachment implements ShouldQueue
 
     public function handle()
     {
+
         // Lê o arquivo
         $content = Storage::get($this->path);
 
@@ -41,5 +44,6 @@ class ProcessTicketAttachment implements ShouldQueue
 
 
         // Você pode adicionar notificações aqui se quiser
+        Log::info("Ticket {$this->ticket->id} processado para {$this->ticket->user->email}");
     }
 }
