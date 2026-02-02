@@ -229,3 +229,7 @@ Exemplo de modelo para arquivo .txt pra o TICKET
 
       
 
+<img width="1680" height="1050" alt="Captura de tela de 2026-02-02 13-21-00" src="https://github.com/user-attachments/assets/cc9bd501-e09d-4574-90fe-b7b134c344c7" />
+
+<img width="1680" height="1050" alt="Captura de tela de 2026-02-02 13-22-52" src="https://github.com/user-attachments/assets/243064fa-7180-4874-9f96-7c718e7b5d63" />
+<img width="1680" height="1050" alt="Captura de tela de 2026-02-02 13-24-09" src="https://github.com/user-attachments/assets/3d64ebad-432d-4bae-a97b-295585d91b15" />
