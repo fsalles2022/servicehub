@@ -206,3 +206,20 @@ OBS: Ajustar docker-compose com variaveis de portas conforme seu ambiente no arq
          ports:
       - "3307:3306"
 
+
+Exemplo de modelo para arquivo .txt pra o TICKET
+
+[tickets.txt](https://github.com/user-attachments/files/25012236/tickets.txt){
+  "steps": [
+    "Verificar servidor",
+    "Reiniciar serviços",
+    "Executar script de manutenção"
+  ],
+  "notes": "Este ticket é apenas um teste de upload.",
+  "assigned_to": "Técnico Responsável",
+  "priority": "alta"
+}
+
+
+      
+
