@@ -193,6 +193,12 @@ docker-compose up -d --build
 
 6. Entrar no container
 docker exec -it servicehub_app bash
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate --seed
+php artisan queue:work
+php artisan test
 
 5. Acessar a Aplicação
 Após o build finalizar, a aplicação estará disponível em:
