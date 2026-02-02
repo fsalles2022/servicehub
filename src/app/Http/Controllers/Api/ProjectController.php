@@ -17,25 +17,36 @@ class ProjectController extends Controller
 
     public function store(Request $request)
     {
-        // Validação dos campos obrigatórios
         $data = $request->validate([
             'company_id' => 'required|exists:companies,id',
             'name' => 'required|string',
             'description' => 'nullable|string',
         ]);
 
-        return $this->service->create($data);
+        $project = $this->service->create($data);
+
+        return response()->json([
+            'data' => $project
+        ], 201); // 201 Created
     }
 
     public function index(Request $request)
     {
         $companyId = $request->query('company_id');
 
-        return $this->service->list($companyId);
+        $projects = $this->service->list($companyId);
+
+        return response()->json([
+            'data' => $projects
+        ]);
     }
 
     public function show($id)
     {
-        return $this->service->find($id);
+        $project = $this->service->find($id);
+
+        return response()->json([
+            'data' => $project
+        ]);
     }
 }

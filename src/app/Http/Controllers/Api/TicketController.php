@@ -1,6 +1,5 @@
 <?php
 
-// app/Http/Controllers/Api/TicketController.php
 namespace App\Http\Controllers\Api;
 
 use App\Models\Ticket;
@@ -10,57 +9,61 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreTicketRequest;
 use App\Jobs\ProcessTicketAttachment;
 
-
-
 class TicketController extends Controller
 {
-
-
     public function store(StoreTicketRequest $request, TicketService $service)
     {
-        return response()->json(
-            $service->createTicket($request->validated()),
-            201
-        );
-    }
+        $ticket = $service->createTicket($request->validated());
 
+        return response()->json([
+            'data' => $ticket
+        ], 201);
+    }
 
     public function show(Ticket $ticket)
     {
-        return $ticket->load(['detail', 'project', 'user']);
-    }
+        $ticket->load(['detail', 'project', 'user']);
 
-    public function upload(Request $request, Ticket $ticket)
-    {
-        $request->validate([
-            'attachment' => 'required|file|mimes:json,txt'
+        return response()->json([
+            'data' => $ticket
         ]);
-
-        $path = $request->file('attachment')->store('tickets');
-
-        ProcessTicketAttachment::dispatch($ticket, $path);
-
-        return response()->json(['queued' => true]);
     }
+public function upload(Request $request, Ticket $ticket)
+{
+    $request->validate([
+        'attachment' => 'required|file|mimes:json,txt'
+    ]);
+
+    $path = $request->file('attachment')->store("tickets/{$ticket->id}", 'local');
+
+    ProcessTicketAttachment::dispatch($ticket, $path);
+
+    return response()->json([
+        'data' => ['queued' => true]
+    ]);
+}
 
     public function download(Ticket $ticket)
     {
         $content = $ticket->detail?->technical_notes;
 
         if (! $content) {
-            return response()->json(['error' => 'Arquivo não encontrado'], 404);
+            return response()->json([
+                'error' => 'Arquivo não encontrado'
+            ], 404);
         }
 
         return response($content)
-            ->header('Content-Type', 'text/plain')
+            ->header('Content-Type', 'text/plain; charset=utf-8')
             ->header('Content-Disposition', 'attachment; filename="ticket_' . $ticket->id . '.txt"');
     }
 
-
     public function index(TicketService $service)
     {
-        return response()->json(
-            $service->index()
-        );
+        $tickets = $service->index();
+
+        return response()->json([
+            'data' => $tickets
+        ]);
     }
 }
