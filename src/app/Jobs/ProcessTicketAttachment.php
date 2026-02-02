@@ -29,7 +29,7 @@ class ProcessTicketAttachment implements ShouldQueue
     public function handle()
     {
 
-        // Lê o arquivo
+        $ticket = Ticket::with('user')->findOrFail($this->ticket->id);        // Lê o arquivo
         $content = Storage::get($this->path);
 
         //*Atualiza o TicketDetail relacionado
@@ -44,6 +44,6 @@ class ProcessTicketAttachment implements ShouldQueue
 
 
         // Você pode adicionar notificações aqui se quiser
-        event(new TicketProcessed($this->ticket));
+        event(new TicketProcessed($ticket));
     }
 }

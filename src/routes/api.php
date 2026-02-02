@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\{
     TicketController
 };
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 // 🔓 ROTAS PÚBLICAS
 Route::post('/login', [AuthController::class, 'login']);
@@ -30,4 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/tickets/{ticket}/download', [TicketController::class, 'download']);
 
+    Route::get('/me', function (Request $request) {
+        return $request->user()->load('profile');
+    })->middleware('auth:sanctum');
 });
