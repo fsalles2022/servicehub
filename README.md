@@ -198,7 +198,7 @@ cp .env.example .env
 php artisan key:generate
 php artisan migrate --seed
 php artisan queue:work
-php artisan test
+php artisan test ou vendor/bin/phpunit --testsuite=Feature
 
 5. Acessar a Aplicação
 Após o build finalizar, a aplicação estará disponível em:
