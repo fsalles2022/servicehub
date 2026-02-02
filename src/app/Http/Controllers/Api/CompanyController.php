@@ -12,8 +12,13 @@ class CompanyController extends Controller
 
     public function index()
     {
-        return $this->service->list();
+        $companies = $this->service->list();
+
+        return response()->json([
+            'data' => $companies
+        ]);
     }
+
 
     public function store(Request $request)
     {
@@ -23,11 +28,19 @@ class CompanyController extends Controller
             'phone' => 'nullable|string'
         ]);
 
-        return $this->service->create($data);
+        $company = $this->service->create($data);
+
+        return response()->json([
+            'data' => $company
+        ], 201); // 201 Created
     }
 
     public function show($id)
     {
-        return $this->service->show($id);
+        $company = $this->service->show($id);
+
+        return response()->json([
+            'data' => $company
+        ]);
     }
 }
