@@ -148,12 +148,19 @@ Subir containers
 docker-compose up -d --build
 
 Entrar no container
+
 docker exec -it servicehub_app bash
+
 composer install
+
 cp .env.example .env
+
 php artisan key:generate
+
 php artisan migrate --seed
+
 php artisan queue:work
+
 php artisan test
 
 🌐 Acesso
